@@ -6,19 +6,21 @@ import (
 	"io"
 	"log"
 	"os"
+	"strconv"
 )
 
 type Quiz struct {
 	Question string `csv:"Question"`
-	Answer   string `csv:"Answer"`
+	Answer   int    `csv:"Answer"`
 }
+
+const (
+	question int = iota
+	answer
+)
 
 func main() {
 	quizReader()
-	// quiz := Quiz{
-	// 	Question: records[0], //outputs question row
-	// 	Answer:   records[1], //outputs answer row
-	// }
 }
 
 func quizReader() {
@@ -38,7 +40,7 @@ func quizReader() {
 
 	//read all of the file
 	for {
-		records, err := reader.Read()
+		row, err := reader.Read()
 
 		//EOF is the error returned by Read when no more input
 		//is available. This breaks at end of read
@@ -49,8 +51,17 @@ func quizReader() {
 			log.Fatal(err)
 		}
 
+		//convert string answer to int
+		answer, err := strconv.Atoi(row[answer])
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		//print file
-		fmt.Println(records[0])
+		fmt.Println(Quiz{
+			Question: row[question],
+			Answer:   answer,
+		})
 	}
 
 }
