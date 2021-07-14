@@ -11,3 +11,7 @@ cd into the cloned repo and go build .
 ./QuizGamePractice.exe (runs default test)
 ./QuizGamePractice.exe --help (shows other tests available)
 ./QuizGamePractice.exe -csv=./quizzes/<quiz-name>.csv (to change the quiz you wish to take)
+  
+  Future Updates
+  -Timed test taking
+    -Ability to change the amount of time you can take on the test
