@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 type Quiz struct {
@@ -55,7 +56,7 @@ func quizReader() {
 		}
 	}
 
-	fmt.Println("You got", numberCorrect, "out of", len(quiz), "correct")
+	fmt.Printf("You got %d out of %d correct. \n", numberCorrect, len(quiz))
 }
 
 //parses the read all and puts into a struct for use
@@ -64,7 +65,7 @@ func parseRows(rows [][]string) []Quiz {
 	for i, row := range rows {
 		quiz[i] = Quiz{
 			Question: row[0],
-			Answer:   row[1],
+			Answer:   strings.TrimSpace(row[1]),
 		}
 	}
 	return quiz
