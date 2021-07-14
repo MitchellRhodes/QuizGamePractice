@@ -15,8 +15,8 @@ type Quiz struct {
 }
 
 func main() {
-	csvFilename := flag.String("csv", "./addition.csv",
-		"A csv in the format of 'Question,Answer'. subtraction.csv and multiplication.csv are also available")
+	csvFilename := flag.String("csv", "./quizzes/addition.csv",
+		"A csv in the format of 'Question,Answer'. ./quizzes/subtraction.csv and ./quizzes/multiplication.csv are also available")
 	flag.Parse()
 	quizReader(*csvFilename)
 
