@@ -2,9 +2,11 @@ package main
 
 import (
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 type Quiz struct {
@@ -13,13 +15,16 @@ type Quiz struct {
 }
 
 func main() {
-	quizReader()
+	csvFilename := flag.String("csv", "./addition.csv",
+		"A csv in the format of 'Question,Answer'. subtraction.csv and multiplication.csv are also available")
+	flag.Parse()
+	quizReader(*csvFilename)
 
 }
 
-func quizReader() {
+func quizReader(fileName string) {
 	//open the file
-	quizFile, err := os.Open("./questionsAndAnswers.csv")
+	quizFile, err := os.Open(fileName)
 	if err != nil {
 		panic(err)
 	}
@@ -55,7 +60,7 @@ func quizReader() {
 		}
 	}
 
-	fmt.Println("You got", numberCorrect, "out of", len(quiz), "correct")
+	fmt.Printf("You got %d out of %d correct. \n", numberCorrect, len(quiz))
 }
 
 //parses the read all and puts into a struct for use
@@ -64,7 +69,7 @@ func parseRows(rows [][]string) []Quiz {
 	for i, row := range rows {
 		quiz[i] = Quiz{
 			Question: row[0],
-			Answer:   row[1],
+			Answer:   strings.TrimSpace(row[1]),
 		}
 	}
 	return quiz
