@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -14,13 +15,15 @@ type Quiz struct {
 }
 
 func main() {
-	quizReader()
+	csvFilename := flag.String("csv", "./questionsAndAnswers.csv",
+		"A csv in the format of 'Question,Answer'")
+	quizReader(*csvFilename)
 
 }
 
-func quizReader() {
+func quizReader(fileName string) {
 	//open the file
-	quizFile, err := os.Open("./questionsAndAnswers.csv")
+	quizFile, err := os.Open(fileName)
 	if err != nil {
 		panic(err)
 	}
