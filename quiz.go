@@ -42,8 +42,18 @@ func quizReader() {
 	quiz := parseRows(rows)
 
 	//loop through the struct to output questions
+	//i+1 is so that we skip the 0 index, which is a header
 	for i, problem := range quiz {
 		fmt.Printf("Solve #%d: %s = \n", i+1, problem.Question)
+
+		var userAnswer string
+		fmt.Scanf("%s\n", &userAnswer)
+
+		if userAnswer == problem.Answer {
+			fmt.Println("Good Job")
+		} else {
+			fmt.Println("Wrong")
+		}
 	}
 }
 
