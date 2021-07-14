@@ -13,5 +13,4 @@ cd into the cloned repo and go build .
 ./QuizGamePractice.exe -csv=./quizzes/<quiz-name>.csv (to change the quiz you wish to take)
   
   Future Updates
-  -Timed test taking
-    -Ability to change the amount of time you can take on the test
+  -Timed test taking and the ability to change the amount of time you can take on the test
