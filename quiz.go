@@ -40,6 +40,7 @@ func quizReader() {
 
 	//attributes the newly made struct to a variable
 	quiz := parseRows(rows)
+	var numberCorrect int = 0
 
 	//loop through the struct to output questions
 	//i+1 is so that we skip the 0 index, which is a header
@@ -50,11 +51,11 @@ func quizReader() {
 		fmt.Scanf("%s\n", &userAnswer)
 
 		if userAnswer == problem.Answer {
-			fmt.Println("Good Job")
-		} else {
-			fmt.Println("Wrong")
+			numberCorrect++
 		}
 	}
+
+	fmt.Println("You got", numberCorrect, "out of", len(quiz), "correct")
 }
 
 //parses the read all and puts into a struct for use
