@@ -3,24 +3,18 @@ package main
 import (
 	"encoding/csv"
 	"fmt"
-	"io"
 	"log"
 	"os"
-	"strconv"
 )
 
 type Quiz struct {
 	Question string `csv:"Question"`
-	Answer   int    `csv:"Answer"`
+	Answer   string `csv:"Answer"`
 }
-
-const (
-	question int = iota
-	answer
-)
 
 func main() {
 	quizReader()
+
 }
 
 func quizReader() {
@@ -39,29 +33,28 @@ func quizReader() {
 	}
 
 	//read all of the file
-	for {
-		row, err := reader.Read()
-
-		//EOF is the error returned by Read when no more input
-		//is available. This breaks at end of read
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		//convert string answer to int
-		answer, err := strconv.Atoi(row[answer])
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		//print file
-		fmt.Println(Quiz{
-			Question: row[question],
-			Answer:   answer,
-		})
+	rows, err := reader.ReadAll()
+	if err != nil {
+		log.Fatal(err)
 	}
 
+	//attributes the newly made struct to a variable
+	quiz := parseRows(rows)
+
+	//loop through the struct to output questions
+	for i, problem := range quiz {
+		fmt.Printf("Solve #%d: %s = \n", i+1, problem.Question)
+	}
+}
+
+//parses the read all and puts into a struct for use
+func parseRows(rows [][]string) []Quiz {
+	quiz := make([]Quiz, len(rows))
+	for i, row := range rows {
+		quiz[i] = Quiz{
+			Question: row[0],
+			Answer:   row[1],
+		}
+	}
+	return quiz
 }
