@@ -12,6 +12,6 @@ cd into the cloned repo and go build .
 ./QuizGamePractice.exe --help (shows other tests available)
 ./QuizGamePractice.exe -csv=./quizzes/quiz-name.csv (to change the quiz you wish to take)
 
-Updates
+Updates:
 Added a time limit that defaults to 30 seconds.
 
