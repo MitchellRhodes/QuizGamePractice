@@ -49,6 +49,23 @@ func quizReader(fileName string, timeLimit int) {
 
 	//attributes the newly made struct to a variable
 	quiz := parseRows(rows)
+
+	runQuiz(quiz, timeLimit)
+}
+
+//parses the read all and puts into a struct for use
+func parseRows(rows [][]string) []Quiz {
+	quiz := make([]Quiz, len(rows))
+	for i, row := range rows {
+		quiz[i] = Quiz{
+			Question: row[0],
+			Answer:   strings.TrimSpace(row[1]),
+		}
+	}
+	return quiz
+}
+
+func runQuiz(quiz []Quiz, timeLimit int) {
 	var numberCorrect int = 0
 
 	timer := time.NewTimer(time.Duration(timeLimit) * time.Second)
@@ -73,7 +90,8 @@ func quizReader(fileName string, timeLimit int) {
 
 		//if you get an answer from the timer channel
 		case <-timer.C:
-			fmt.Printf("\nYou got %d out of %d correct. \n", numberCorrect, len(quiz))
+			fmt.Println("\nYou have run out of time.")
+			fmt.Printf(" \nYou got %d out of %d correct.", numberCorrect, len(quiz))
 			return
 
 		//if you get an answer from the answer channel.
@@ -83,18 +101,5 @@ func quizReader(fileName string, timeLimit int) {
 			}
 		}
 	}
-
-	fmt.Printf("You got %d out of %d correct. \n", numberCorrect, len(quiz))
-}
-
-//parses the read all and puts into a struct for use
-func parseRows(rows [][]string) []Quiz {
-	quiz := make([]Quiz, len(rows))
-	for i, row := range rows {
-		quiz[i] = Quiz{
-			Question: row[0],
-			Answer:   strings.TrimSpace(row[1]),
-		}
-	}
-	return quiz
+	fmt.Printf(" \nYou got %d out of %d correct.", numberCorrect, len(quiz))
 }
