@@ -57,18 +57,27 @@ func quizReader(fileName string, timeLimit int) {
 	//i+1 is so that we skip the 0 index, which is a header
 	for i, problem := range quiz {
 
-		select {
+		fmt.Printf("Solve #%d: %s = \n", i+1, problem.Question)
 
-		case <-timer.C:
-			fmt.Printf("You got %d out of %d correct. \n", numberCorrect, len(quiz))
-			return
+		answerChannel := make(chan string)
 
-		default:
-			fmt.Printf("Solve #%d: %s = \n", i+1, problem.Question)
-
+		//anonymous function immediately invoked. Sets userinput to
+		//its own channel so it doesn't block
+		go func() {
 			var userAnswer string
 			fmt.Scanf("%s\n", &userAnswer)
+			answerChannel <- userAnswer
+		}()
 
+		select {
+
+		//if you get an answer from the timer channel
+		case <-timer.C:
+			fmt.Printf("\nYou got %d out of %d correct. \n", numberCorrect, len(quiz))
+			return
+
+		//if you get an answer from the answer channel.
+		case userAnswer := <-answerChannel:
 			if userAnswer == problem.Answer {
 				numberCorrect++
 			}
